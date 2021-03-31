@@ -1,7 +1,8 @@
 Hooks.on("renderActorSheet", function (sheet, html, character) {
+    if (character.actor.type !== "Personagem") return;
     for (let ht of html.find(".movePertence")) {
         if ($(ht).attr('title') === "Mover para Transporte") {
-            $('<a class="tradePertence" title="Mandar para amigo" data-actor-id="'+ character.actor._id +'" data-item-id="'+ ht.dataset.itemId +'">    <i class="fas fa-handshake"></i></a>').insertAfter(ht);
+            $('<a style="margin-left:5px;" class="tradePertence" title="Mandar para amigo" data-actor-id="'+ character.actor._id +'" data-item-id="'+ ht.dataset.itemId +'"><i class="fas fa-handshake"></i></a>').insertAfter(ht);
         }
     }
     html.find(".tradePertence").click(mandaEvento.bind(this));
