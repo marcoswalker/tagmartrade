@@ -15,10 +15,10 @@ Hooks.on("ready", function () {
 
 function recebeSocket(tradeData) {
     if (game.user.character === null) return;
-    const actor = game.actors.get(tradeData.currentActor);
-    const item = actor.getOwnedItem(tradeData.item);
     const targetActor = game.actors.get(tradeData.targetActor);
     if (game.user.character !== targetActor) return;
+    const actor = game.actors.get(tradeData.currentActor);
+    const item = actor.getOwnedItem(tradeData.item);
     targetActor.createOwnedItem(item);
 }
 
