@@ -23,7 +23,7 @@ function recebeSocket(tradeData) {
     let itemquevai = item;
     itemquevai.data.data.quant = tradeData.quant;
     itemquevai._data.data.quant = tradeData.quant;
-    const createdItem = targetActor.createOwnedItem(itemquevai);
+    targetActor.createOwnedItem(itemquevai);
 }
 
 function mandaPertence(event) {
