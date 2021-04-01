@@ -9,9 +9,13 @@ Hooks.on("renderActorSheet", function (sheet, html, character) {
 });
 
 Hooks.on("ready", function () {
-    game.socket.on('module.tagmartrade', tradeData => {
-        recebeSocket(tradeData);
-    });
+    if (game.system.id === "tagmar_rpg" || game.system.id === "tagmar") {
+        game.socket.on('module.tagmartrade', tradeData => {
+            recebeSocket(tradeData);
+        });
+    } else {
+        return ui.notifications.error("O módulo Tagmar Transações, só funciona com o sistema Tagmar.");
+    }
 });
 
 function recebeSocket(tradeData) {
