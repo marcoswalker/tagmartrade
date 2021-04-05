@@ -34,8 +34,9 @@ function recebeSocket(tradeData) {
             actor: game.user.character
         })
     };
-    chatData.content = "<p><img src='"+ actor.img +"' style='float: left; margin-left: auto; margin-right: auto; width: 40%;border: 0px;' /><img src='systems/"+ game.system.id +"/assets/TAGMAR FOUNDRY.png' style='float: left;margin-top:25px; margin-left: auto; margin-right: auto; width: 20%;border: 0px;'/><img src='"+ targetActor.img +"' style='float: left; width: 40%; margin-left: auto; margin-right: auto;border: 0px;' /></p><p class='rola_desc' style='display: block;margin-left:auto;margin-right:auto;margin-top:50%;'>"+ "<b>" + actor.data.name + "</b> acaba de presentear <b>"+ targetActor.data.name +"</b> com <b>"+ String(tradeData.quant) +"</b> <b>"+ itemquevai.data.name +"</b>." +"</p>";
+    chatData.content = "<p><img src='"+ actor.img +"' style='float: left; margin-left: auto; margin-right: auto; width: 40%;border: 0px;' /><img src='systems/"+ game.system.id +"/assets/TAGMAR FOUNDRY.png' style='float: left;margin-top:25px; margin-left: auto; margin-right: auto; width: 20%;border: 0px;'/><img src='"+ targetActor.img +"' style='float: left; width: 40%; margin-left: auto; margin-right: auto;border: 0px;' /></p><p class='rola_desc' style='display: block;margin-left:auto;margin-right:auto;margin-top:60%;'>"+ "<b>" + actor.data.name + "</b> acaba de presentear <b>"+ targetActor.data.name +"</b> com <b>"+ String(tradeData.quant) +"</b> <b>"+ itemquevai.data.name +"</b>." +"</p>";
     ChatMessage.create(chatData);
+    ui.notifications.info("Você acaba de receber " + tradeData.quant + " " + itemquevai.data.name + " de " + actor.data.name);
 }
 
 function mandaPertence(event) {
