@@ -23,11 +23,11 @@ function recebeSocket(tradeData) {
     const targetActor = game.actors.get(tradeData.targetActor);
     if (game.user.character !== targetActor) return;
     const actor = game.actors.get(tradeData.currentActor);
-    const item = actor.getOwnedItem(tradeData.item);
+    const item = actor.items.get(tradeData.item); //actor.getOwnedItem(tradeData.item);
     let itemquevai = item;
     itemquevai.data.data.quant = tradeData.quant;
     itemquevai._data.data.quant = tradeData.quant;
-    targetActor.createOwnedItem(itemquevai);
+    targetActor.createEmbeddedEntity("OwnedItem", itemquevai);//targetActor.createOwnedItem(itemquevai);
     const chatData = {
         user: game.user._id,
         speaker: ChatMessage.getSpeaker({
@@ -44,7 +44,7 @@ function mandaPertence(event) {
     const currentActor = $(event.currentTarget).data("actorId");
     const itemId = $(event.currentTarget).data("itemId");
     const actor = game.actors.get(currentActor);
-    const item = actor.getOwnedItem(itemId);
+    const item =  actor.items.get(itemId); //actor.getOwnedItem(itemId);
     const items = duplicate(item);
     const users = game.users;
     let dialog = new Dialog({
@@ -68,7 +68,7 @@ function mandaPertence(event) {
                                 quant: quant
                             };
                             game.socket.emit('module.tagmartrade', tradeData);
-                            actor.deleteOwnedItem(itemId);
+                            actor.deleteEmbeddedDocuments("Item", itemId);//actor.deleteOwnedItem(itemId);
                         } else {
                             const tradeData = {
                                 item: items._id,

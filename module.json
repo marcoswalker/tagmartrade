@@ -3,7 +3,7 @@
     "title": "Tagmar Transações",
     "description": "Módulo para sistema Tagmar, permite jogadores trocar pertences.",
     "author": "Marcos Walker",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "url": "https://github.com/marcoswalker/tagmartrade",
     "minimumCoreVersion": "0.7.9",
     "compatibleCoreVersion": "0.7.9",
