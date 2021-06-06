@@ -2,7 +2,7 @@ Hooks.on("renderActorSheet", function (sheet, html, character) {
     if (character.actor.type !== "Personagem") return;
     for (let ht of html.find(".movePertence")) {
         if ($(ht).attr('title') === "Mover para Transporte") {
-            $('<a style="margin-left:5px;" class="tradePertence" title="Mandar para amigo" data-actor-id="'+ character.actor._id +'" data-item-id="'+ ht.dataset.itemId +'"><i class="fas fa-handshake"></i></a>').insertAfter(ht);
+            $('<a style="margin-left:5px;" class="tradePertence" title="Mandar para amigo" data-actor-id="'+ character.actor.id +'" data-item-id="'+ ht.dataset.itemId +'"><i class="fas fa-handshake"></i></a>').insertAfter(ht);
         }
     }
     html.find(".tradePertence").click(mandaPertence.bind(this));
@@ -23,13 +23,13 @@ function recebeSocket(tradeData) {
     const targetActor = game.actors.get(tradeData.targetActor);
     if (game.user.character !== targetActor) return;
     const actor = game.actors.get(tradeData.currentActor);
-    const item = actor.items.get(tradeData.item); //actor.getOwnedItem(tradeData.item);
+    const item = actor.data.items.get(tradeData.itemc); //actor.getOwnedItem(tradeData.item);
     let itemquevai = item;
     itemquevai.data.data.quant = tradeData.quant;
-    itemquevai._data.data.quant = tradeData.quant;
-    targetActor.createEmbeddedEntity("OwnedItem", itemquevai);//targetActor.createOwnedItem(itemquevai);
+    itemquevai.data._source.data.quant = tradeData.quant;
+    targetActor.createEmbeddedDocuments("Item", [itemquevai.data]);//targetActor.createOwnedItem(itemquevai);
     const chatData = {
-        user: game.user._id,
+        user: game.user.id,
         speaker: ChatMessage.getSpeaker({
             actor: game.user.character
         })
@@ -44,7 +44,7 @@ function mandaPertence(event) {
     const currentActor = $(event.currentTarget).data("actorId");
     const itemId = $(event.currentTarget).data("itemId");
     const actor = game.actors.get(currentActor);
-    const item =  actor.items.get(itemId); //actor.getOwnedItem(itemId);
+    const item =  actor.data.items.get(itemId); //actor.getOwnedItem(itemId);
     const items = duplicate(item);
     const users = game.users;
     let dialog = new Dialog({
@@ -62,18 +62,18 @@ function mandaPertence(event) {
                             ui.notifications.warn("Você não pode enviar mais itens que você tem!");
                         } else if (quant == items.data.quant) {
                             const tradeData = {
-                                item: items._id,
+                                itemc: items._id,
                                 currentActor: currentActor,
-                                targetActor: user.character._id,
+                                targetActor: user.character.id,
                                 quant: quant
                             };
                             game.socket.emit('module.tagmartrade', tradeData);
-                            actor.deleteEmbeddedDocuments("Item", itemId);//actor.deleteOwnedItem(itemId);
+                            actor.deleteEmbeddedDocuments("Item", [itemId]);//actor.deleteOwnedItem(itemId);
                         } else {
                             const tradeData = {
-                                item: items._id,
+                                itemc: items._id,
                                 currentActor: currentActor,
-                                targetActor: user.character._id,
+                                targetActor: user.character.id,
                                 quant: quant
                             };
                             game.socket.emit('module.tagmartrade', tradeData);
