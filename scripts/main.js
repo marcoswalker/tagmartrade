@@ -23,20 +23,18 @@ function recebeSocket(tradeData) {
     const targetActor = game.actors.get(tradeData.targetActor);
     if (game.user.character !== targetActor) return;
     const actor = game.actors.get(tradeData.currentActor);
-    const item = actor.data.items.get(tradeData.itemc); //actor.getOwnedItem(tradeData.item);
-    let itemquevai = item;
-    itemquevai.data.data.quant = tradeData.quant;
-    itemquevai.data._source.data.quant = tradeData.quant;
-    targetActor.createEmbeddedDocuments("Item", [itemquevai.data]);//targetActor.createOwnedItem(itemquevai);
+    let itemquevai = tradeData.itemc;
+    itemquevai.data.quant = tradeData.quant;
+    targetActor.createEmbeddedDocuments("Item", [itemquevai]);//targetActor.createOwnedItem(itemquevai);
     const chatData = {
         user: game.user.id,
         speaker: ChatMessage.getSpeaker({
             actor: game.user.character
         })
     };
-    chatData.content = "<p><img src='"+ actor.img +"' style='float: left; margin-left: auto; margin-right: auto; width: 40%;border: 0px;' /><img src='systems/"+ game.system.id +"/assets/TAGMAR FOUNDRY.png' style='float: left;margin-top:25px; margin-left: auto; margin-right: auto; width: 20%;border: 0px;'/><img src='"+ targetActor.img +"' style='float: left; width: 40%; margin-left: auto; margin-right: auto;border: 0px;' /></p><p class='rola_desc' style='display: block;margin-left:auto;margin-right:auto;margin-top:60%;'>"+ "<b>" + actor.data.name + "</b> acaba de presentear <b>"+ targetActor.data.name +"</b> com <b>"+ String(tradeData.quant) +"</b> <b>"+ itemquevai.data.name +"</b>." +"</p>";
+    chatData.content = "<p><img src='"+ actor.img +"' style='float: left; margin-left: auto; margin-right: auto; width: 40%;border: 0px;' /><img src='systems/"+ game.system.id +"/assets/TAGMAR FOUNDRY.png' style='float: left;margin-top:25px; margin-left: auto; margin-right: auto; width: 20%;border: 0px;'/><img src='"+ targetActor.img +"' style='float: left; width: 40%; margin-left: auto; margin-right: auto;border: 0px;' /></p><p class='rola_desc' style='display: block;margin-left:auto;margin-right:auto;margin-top:60%;'>"+ "<b>" + actor.data.name + "</b> acaba de presentear <b>"+ targetActor.data.name +"</b> com <b>"+ String(tradeData.quant) +"</b> <b>"+ itemquevai.name +"</b>." +"</p>";
     ChatMessage.create(chatData);
-    ui.notifications.info("Você acaba de receber " + tradeData.quant + " " + itemquevai.data.name + " de " + actor.data.name);
+    ui.notifications.info("Você acaba de receber " + tradeData.quant + " " + itemquevai.name + " de " + actor.data.name);
 }
 
 function mandaPertence(event) {
@@ -45,7 +43,7 @@ function mandaPertence(event) {
     const itemId = $(event.currentTarget).data("itemId");
     const actor = game.actors.get(currentActor);
     const item =  actor.data.items.get(itemId); //actor.getOwnedItem(itemId);
-    const items = duplicate(item);
+    const items = item.clone();
     const users = game.users;
     let dialog = new Dialog({
         title: "Enviar item para jogador",
@@ -58,11 +56,11 @@ function mandaPertence(event) {
                     let quant = parseInt($('.quant').val());
                     const user = game.users.get($('.users_names').val());
                     if (quant > 0 && user !== null) {
-                        if (quant > items.data.quant){
+                        if (quant > item.data.quant){
                             ui.notifications.warn("Você não pode enviar mais itens que você tem!");
-                        } else if (quant == items.data.quant) {
+                        } else if (quant == items.data.data.quant) {
                             const tradeData = {
-                                itemc: items._id,
+                                itemc: items.data,
                                 currentActor: currentActor,
                                 targetActor: user.character.id,
                                 quant: quant
@@ -71,13 +69,13 @@ function mandaPertence(event) {
                             actor.deleteEmbeddedDocuments("Item", [itemId]);//actor.deleteOwnedItem(itemId);
                         } else {
                             const tradeData = {
-                                itemc: items._id,
+                                itemc: items.data,
                                 currentActor: currentActor,
                                 targetActor: user.character.id,
                                 quant: quant
                             };
                             game.socket.emit('module.tagmartrade', tradeData);
-                            item.update({'data.quant': items.data.quant - quant});
+                            actor.updateEmbeddedDocuments("Item", [{'_id': item.id, 'data.quant': items.data.data.quant - quant}])
                         }
                     } else if (user === null) {
                         ui.notifications.warn("Tem que ter outro jogador online!");
@@ -93,7 +91,7 @@ function mandaPertence(event) {
         default: "nao",
         render: html => {
             for (let user of users) {
-                if (user.active && user.character !== null && user !== game.user && !user.isGM) $('.users_names').append("<option value='"+user.data._id+"'>"+user.data.name+"</option>");
+                if (user.active && user.character !== null && user !== game.user && !user.isGM) $('.users_names').append("<option value='"+user.id+"'>"+user.data.name+"</option>");
             }
         },
     });
