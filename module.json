@@ -10,11 +10,7 @@
     }
   ],
   "url": "https://github.com/marcoswalker/tagmartrade",
-<<<<<<< HEAD
   "version": "1.0.8",
-=======
-  "version": "1.0.6",
->>>>>>> 898ea5e2bf642fb5abdf17a04b82f65b30806bb4
   "esmodules": [
     "scripts/main.js",
     "scripts/vote.js"
@@ -25,13 +21,9 @@
   "media": [
     {
       "type": "screenshot",
-<<<<<<< HEAD
       "url": "https://raw.githubusercontent.com/marcoswalker/tagmartrade/master/page/gifanimado.gif",
       "loop": false,
       "flags": {}
-=======
-      "url": "https://raw.githubusercontent.com/marcoswalker/tagmartrade/master/page/gifanimado.gif"
->>>>>>> 898ea5e2bf642fb5abdf17a04b82f65b30806bb4
     }
   ],
   "relationships": {
@@ -50,10 +42,6 @@
   },
   "compatibility": {
     "minimum": "10",
-<<<<<<< HEAD
     "verified": "12"
-=======
-    "verified": "11"
->>>>>>> 898ea5e2bf642fb5abdf17a04b82f65b30806bb4
   }
 }
