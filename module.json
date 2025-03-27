@@ -1,0 +1,47 @@
+{
+  "id": "tagmartrade",
+  "title": "Tagmar Transações",
+  "description": "Módulo para sistema Tagmar, permite jogadores trocar pertences.",
+  "authors": [
+    {
+      "name": "Marcos Walker",
+      "url": "https://github.com/marcoswalker",
+      "flags": {}
+    }
+  ],
+  "url": "https://github.com/marcoswalker/tagmartrade",
+  "version": "1.0.8",
+  "esmodules": [
+    "scripts/main.js",
+    "scripts/vote.js"
+  ],
+  "socket": true,
+  "manifest": "https://raw.githubusercontent.com/marcoswalker/tagmartrade/master/module.json",
+  "download": "https://codeload.github.com/marcoswalker/tagmartrade/zip/master",
+  "media": [
+    {
+      "type": "screenshot",
+      "url": "https://raw.githubusercontent.com/marcoswalker/tagmartrade/master/page/gifanimado.gif",
+      "loop": false,
+      "flags": {}
+    }
+  ],
+  "relationships": {
+    "systems": [
+      {
+        "id": "tagmar",
+        "type": "system",
+        "compatibility": {}
+      },
+      {
+        "id": "tagmar_rpg",
+        "type": "system",
+        "compatibility": {}
+      }
+    ]
+  },
+  "compatibility": {
+    "minimum": "10",
+    "verified": "12"
+  }
+}
